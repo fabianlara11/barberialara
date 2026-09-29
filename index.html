@@ -1,0 +1,749 @@
+<?php
+include 'verificar_cliente.php';
+?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barbería BARBERAP</title>
+    <!-- Estilos CSS integrados directamente en el HTML -->
+    <style>
+        /* Estilos generales para el cuerpo de la página */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4; /* Color de fondo suave */
+            color: #333; /* Color de texto principal */
+            line-height: 1.6;
+        }
+
+        /* Estilos para el encabezado */
+        header {
+            background-color: #333; /* Fondo oscuro para el encabezado */
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Sombra sutil */
+        }
+
+        /* Estilos para la navegación */
+        nav ul {
+            list-style: none; /* Quitar viñetas de la lista */
+            display: flex;
+            gap: 1.5rem; /* Espacio entre elementos del menú */
+            margin: 0;
+            padding: 0;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none; /* Quitar subrayado de enlaces */
+            font-weight: bold;
+            transition: color 0.3s ease; /* Transición suave al pasar el ratón */
+        }
+
+        nav a:hover {
+            color: #A0835D; /* Color de acento al pasar el ratón */
+        }
+
+        /* Estilos para el contenido principal */
+        main {
+            padding: 2rem;
+            max-width: 1000px; /* Vuelve al ancho original */
+            margin: auto; /* Centrar el contenido */
+            display: block; /* Vuelve a display block, ya no es flex */
+        }
+        .text-white {
+            color: white;
+        }
+        .header {
+            background-image: url('img/barra.jpg'); 
+            background-size: cover;
+            background-position: center;             
+        }
+
+        /* Contenedor para las secciones principales (inicio, servicios, contacto) */
+        .main-content-sections {
+            /* Ya no es necesario flexbox para este contenedor, ocupa el 100% */
+            width: 100%;
+           /* background-image: url('img/fondo.jpg'); */
+        }
+        .btn {
+            padding: 10px 20px;
+            background-color: #00218b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .img-1 {
+            background-image: url('img/corte.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        .img-2 {
+            background-image: url('img/barba.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        .img-3 {
+            background-image: url('img/barbaycorte.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        .img-4 {
+            background-image: url('img/afeitado.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        .img-5 {
+            background-image: url('img/facial.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .container {
+            width: 100%;
+            background-image: url('img/fondo.jpg'); 
+            background-size: cover;
+            background-position: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.445); /* Fondo negro con 85% de opacidad */
+            z-index: 1;
+        }
+        
+        .container > * {
+            position: relative;
+            z-index: 2; /* Asegura que el contenido esté por encima del fondo oscuro */
+        }
+
+        /* Estilos para las secciones */
+        section {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* Sombra para las secciones */
+            text-align: center;
+        }
+        
+        /* Estilo especial para la sección de inicio con fondo negro transparente */
+        #inicio {
+            background-color: rgba(0, 0, 0, 0.85); /* Fondo negro con 85% de opacidad */
+            color: white;
+            padding: 3rem 2rem;
+        }
+
+        /* Estilos para la sección de login (eliminada, pero se mantiene por si acaso) */
+        #login-section {
+            display: none; /* Asegura que no se muestre */
+        }
+
+        section h2 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 2.2rem;
+        }
+
+        section p {
+            font-size: 1.1rem;
+            color: #555;
+        }
+
+        /* Estilos para el botón de reservar */
+        #btn-reservar {
+            background-color: #000e8a; /* Color de acento */
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 1.5rem;
+        }
+
+        #btn-reservar:hover {
+            background-color: #8C6A49; /* Tono más oscuro al pasar el ratón */
+            transform: translateY(-2px); /* Pequeño efecto de elevación */
+        }
+
+        /* Estilos para los servicios */
+        #servicios {
+            margin-bottom: 1rem;
+        }
+        
+        /* Estilos para las tarjetas de servicios */
+        #tarjetas-servicios {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .servicio {
+            background-color: #eee;
+            padding: 30px;
+            border-radius: 8px;
+            width: 200px;
+            height: 120px;
+            text-align: center;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .servicio::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+        
+        .servicio:hover::before {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+        
+        .servicio span {
+            position: relative;
+            z-index: 2;
+            font-size: 1.4rem;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+        }
+
+        .servicio:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Estilos para formularios */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        form label {
+            text-align: left;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        form input, 
+        form textarea, 
+        form select {
+            display: block;
+            width: calc(100% - 20px); /* Ajuste para padding */
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+
+        form textarea {
+            resize: vertical; /* Permitir redimensionar verticalmente */
+        }
+
+        form button {
+            background-color: #333;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        form button:hover {
+            background-color: #555;
+        }
+
+        /* Estilos del modal (ventana emergente) */
+        .modal {
+            display: none; /* Oculto por defecto */
+            position: fixed; /* Posición fija para cubrir toda la pantalla */
+            z-index: 1000; /* Asegura que esté por encima de otros elementos */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto; /* Habilitar scroll si el contenido es muy largo */
+            background-color: rgba(0,0,0,0.6); /* Fondo semi-transparente oscuro */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            padding: 30px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 550px; /* Ancho máximo del contenido del modal */
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); /* Sombra más pronunciada */
+            border-radius: 10px;
+            animation: fadeIn 0.3s ease-out; /* Animación de aparición */
+        }
+
+        /* Animación para el modal */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .close-btn {
+            color: #aaa;
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: #333;
+            text-decoration: none;
+        }
+
+        /* Estilos para el pie de página */
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: #333;
+            color: white;
+            margin-top: 3rem;
+            font-size: 0.9rem;
+            width: 100%; /* Asegura que el footer ocupe todo el ancho */
+        }
+
+        /* Estilos para ocultar/mostrar elementos dinámicamente */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Media Queries para responsividad */
+        @media (max-width: 768px) {
+            main {
+                flex-direction: column; /* Apilar las columnas en pantallas pequeñas */
+            }
+
+            .main-content-sections {
+                flex: none; /* Desactivar flex para que tomen el ancho completo */
+                width: 100%;
+                min-width: unset;
+                max-width: unset;
+            }
+
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+                margin-top: 1rem;
+            }
+
+            section {
+                padding: 1.5rem;
+            }
+
+            #tarjetas-servicios {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .servicio {
+                width: 80%;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav>
+            <h1>BARBERAP</h1>
+            <ul>
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="main-content-sections">
+      
+            <section class="container" id="inicio">
+                <h2 class="text-white">Estilo y poder en cada corte</h2>
+                <p class="text-white">Bienvenido a tu barbero de confianza. Reserva tu cita y luce como un PRO.</p>
+                <!-- Botón para abrir el formulario de reserva -->
+                <button class="btn" id="btn-reservar">Reservar ahora</button>
+            </section>
+            
+            <section id="servicios">
+                <h2>Nuestros Servicios</h2>
+            </section>
+            
+            <section id="tarjetas-servicios">
+                <div class="servicio img-1"><span>Corte de Cabello</span></div>
+                <div class="servicio img-2"><span>Arreglo de Barba</span></div>
+                <div class="servicio img-3"><span>Corte + Barba</span></div>
+                <div class="servicio img-4"><span>Afeitado Clásico</span></div>
+                <div class="servicio img-5"><span>Tratamiento Facial</span></div>
+            </section>
+
+            <section id="contacto">
+                <h2>Contáctanos</h2>
+                <!-- Formulario de contacto que se procesa con AJAX -->
+                <form id="form-contacto" method="post" action="procesar_contacto.php">
+                    <input type="text" name="nombre" placeholder="Tu nombre" required>
+                    <input type="email" name="email" placeholder="Tu email" required>
+                    <textarea name="mensaje" placeholder="Tu mensaje" rows="5" required></textarea>
+                    <button type="submit">Enviar mensaje</button>
+                </form>
+            </section>
+        </div>
+
+        <!-- La sección de Login ha sido eliminada -->
+    </main>
+
+    <!-- Formulario de Reserva (Modal) -->
+    <div id="modal-reserva" class="modal">
+        <div class="modal-content">
+            <!-- Botón para cerrar el modal -->
+            <span class="close-btn">&times;</span>
+            <h3>Reservar Cita</h3>
+            <!-- Formulario de reserva con lógica de búsqueda por cédula -->
+            <form id="form-reserva" action="procesar_reserva.php" method="POST">
+                <!-- Campo oculto para el ID del cliente, para enviar al backend -->
+                <input type="hidden" id="cliente_id" name="cliente_id" value="">
+
+                <div id="client-search-area">
+                    <label for="cedula_reserva">Identificación:</label>
+                    <input type="text" id="cedula_reserva" name="identificacion_reserva" placeholder="Ingresa la identificación o DNI">
+                    <button type="button" id="btn-buscar-cliente">Buscar Cliente</button>
+                    <button type="button" id="btn-crear-usuario" style="background-color: #007bff; color: white; margin-left: 10px;">Crear usuario</button>
+                    <p id="search-message" style="color: gray; font-size: 0.9em; margin-top: 5px;"></p>
+                </div>
+
+                <div id="client-details-area" class="hidden">
+                    <!-- Campo identificación para nuevo usuario -->
+                    <div id="cedula-nuevo-group" style="display:none;">
+                        <label for="cedula_nuevo">Identificación:</label>
+                        <input type="text" id="cedula_nuevo" name="identificacion_nuevo" placeholder="Identificación del cliente">
+                    </div>
+                    <label for="nombre_reserva">Nombre:</label>
+                    <input type="text" id="nombre_reserva" name="nombre_reserva" placeholder="Nombre del cliente" required>
+                    
+                    <label for="apellido_reserva">Apellido:</label>
+                    <input type="text" id="apellido_reserva" name="apellido_reserva" placeholder="Apellido del cliente" required>
+                    
+                    <label for="email_reserva">Email:</label>
+                    <input type="email" id="email_reserva" name="email_reserva" placeholder="email@ejemplo.com" required>
+
+                    <label for="telefono_reserva">Teléfono:</label>
+                    <input type="tel" id="telefono_reserva" name="telefono_reserva" placeholder="Ej: 0991234567" required>
+                </div>
+
+                <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+
+                <h4>Detalles de la Cita</h4>
+                <label for="fecha_reserva">Fecha:</label>
+                <input type="date" id="fecha_reserva" name="fecha_reserva" required>
+
+                <label for="hora_reserva">Hora:</label>
+                <input type="time" id="hora_reserva" name="hora_reserva" required>
+
+                <label for="servicio">Servicio:</label>
+                <select id="servicio" name="servicio" required>
+                    <option value="">Selecciona un servicio</option>
+                    <option value="corte">Corte de Cabello</option>
+                    <option value="barba">Arreglo de Barba</option>
+                    <option value="combo">Corte + Barba</option>
+                    <option value="afeitado">Afeitado Clásico</option>
+                    <option value="facial">Tratamiento Facial</option>
+                </select>
+                
+                <button type="submit">Confirmar Reserva</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 BARBERIA BARBERAP. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- JavaScript integrado directamente en el HTML -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Obtener referencias a los elementos del DOM
+            const modal = document.getElementById("modal-reserva");
+            const btnReservar = document.getElementById("btn-reservar");
+            const closeBtn = document.querySelector(".close-btn");
+
+            // Elementos del formulario de reserva
+            const formReserva = document.getElementById('form-reserva');
+            const identificacionInput = document.getElementById('cedula_reserva'); // Mantenemos el ID pero cambiamos la variable
+            const btnBuscarCliente = document.getElementById('btn-buscar-cliente');
+            const btnCrearUsuario = document.getElementById('btn-crear-usuario');
+            const searchMessage = document.getElementById('search-message');
+            const clientSearchArea = document.getElementById('client-search-area');
+            const clientDetailsArea = document.getElementById('client-details-area');
+            const clienteIdInput = document.getElementById('cliente_id'); // Campo oculto para el ID del cliente
+            
+            const nombreInput = document.getElementById('nombre_reserva');
+            const apellidoInput = document.getElementById('apellido_reserva');
+            const emailInput = document.getElementById('email_reserva');
+            const telefonoInput = document.getElementById('telefono_reserva');
+            const identificacionNuevoInput = document.getElementById('cedula_nuevo'); // Mantenemos el ID pero cambiamos la variable
+            const identificacionNuevoGroup = document.getElementById('cedula-nuevo-group');
+
+            // Función para mostrar el modal
+            function openModal() {
+                modal.style.display = "flex"; // Cambia el display a flex para que sea visible y centrado
+                resetReservationForm(); // Resetear el formulario cada vez que se abre
+            }
+
+            // Función para ocultar el modal
+            function closeModal() {
+                modal.style.display = "none"; // Oculta el modal
+            }
+
+            // Función para resetear el estado del formulario de reserva
+            function resetReservationForm() {
+                formReserva.reset(); // Limpia todos los campos del formulario
+                clientSearchArea.classList.remove('hidden'); // Muestra el área de búsqueda
+                clientDetailsArea.classList.add('hidden'); // Oculta el área de detalles del cliente
+                searchMessage.textContent = ''; // Limpia mensajes de búsqueda
+                clienteIdInput.value = ''; // Limpia el ID del cliente
+                cedulaNuevoInput.value = '';
+                cedulaNuevoInput.removeAttribute('required');
+                cedulaNuevoGroup.style.display = 'none';
+
+                // Asegurarse de que los campos de cliente no sean requeridos inicialmente
+                nombreInput.removeAttribute('required');
+                emailInput.removeAttribute('required');
+                telefonoInput.removeAttribute('required');
+            }
+
+            // Asignar eventos a los botones
+            if (btnReservar) {
+                btnReservar.addEventListener('click', openModal);
+            }
+
+            if (closeBtn) {
+                closeBtn.addEventListener('click', closeModal);
+            }
+
+            window.addEventListener('click', (event) => {
+                if (event.target === modal) {
+                    closeModal();
+                }
+            });
+
+            // Lógica para el botón "Buscar Cliente"
+            if (btnBuscarCliente) {
+                btnBuscarCliente.addEventListener('click', async () => { // Usar async para fetch
+                    const identificacion = identificacionInput.value.trim();
+                    if (identificacion === '') {
+                        searchMessage.textContent = 'Por favor, ingresa una identificación.';
+                        searchMessage.style.color = 'red';
+                        return;
+                    }
+
+                    searchMessage.textContent = 'Buscando cliente...';
+                    searchMessage.style.color = 'gray';
+
+                    // --- LLAMADA AJAX REAL PARA BUSCAR CLIENTE POR IDENTIFICACIÓN ---
+                    try {
+                        const response = await fetch('buscar_cliente.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body: `identificacion=${encodeURIComponent(identificacion)}`
+                        });
+                        const data = await response.json(); // Esperamos una respuesta JSON
+
+                        if (data.success && data.cliente) {
+                            searchMessage.textContent = 'Cliente encontrado. Datos cargados.';
+                            searchMessage.style.color = 'green';
+                            
+                            // Usar los campos directamente si existen
+                            if (data.cliente.apellido) {
+                                nombreInput.value = data.cliente.nombre || '';
+                                apellidoInput.value = data.cliente.apellido || '';
+                            } else if (data.cliente.nombre && data.cliente.nombre.includes(' ')) {
+                                // Compatibilidad con registros antiguos: separar nombre completo
+                                const nombreCompleto = data.cliente.nombre.split(' ');
+                                nombreInput.value = nombreCompleto[0]; // Primer nombre
+                                apellidoInput.value = nombreCompleto.slice(1).join(' '); // Resto como apellido
+                            } else {
+                                nombreInput.value = data.cliente.nombre || '';
+                                apellidoInput.value = '';
+                            }
+                            
+                            // Mostrar la identificación si existe
+                            if (data.cliente.identificacion) {
+                                identificacionInput.value = data.cliente.identificacion;
+                            }
+                            
+                            emailInput.value = data.cliente.email;
+                            telefonoInput.value = data.cliente.telefono;
+                            clienteIdInput.value = data.cliente.id; // Guardar el ID del cliente encontrado
+                            
+                            clientSearchArea.classList.add('hidden'); // Oculta el área de búsqueda
+                            clientDetailsArea.classList.remove('hidden'); // Muestra los detalles del cliente
+                            // Hacer los campos de cliente requeridos si se encontró
+                            nombreInput.setAttribute('required', 'required');
+                            apellidoInput.setAttribute('required', 'required');
+                            emailInput.setAttribute('required', 'required');
+                            telefonoInput.setAttribute('required', 'required');
+                            cedulaNuevoInput.removeAttribute('required');
+                            cedulaNuevoInput.value = '';
+                            cedulaNuevoGroup.style.display = 'none';
+                        } else {
+                            searchMessage.textContent = 'Cédula no encontrada. Por favor, ingresa los datos del nuevo cliente.';
+                            searchMessage.style.color = 'orange';
+                            // Limpiar campos por si había algo antes
+                            nombreInput.value = '';
+                            apellidoInput.value = '';
+                            emailInput.value = '';
+                            telefonoInput.value = '';
+                            clienteIdInput.value = ''; // Asegurarse de que el ID del cliente esté vacío
+                            // Los campos de cliente aún no son requeridos hasta que se haga clic en "Nuevo Cliente"
+                            cedulaNuevoInput.value = cedulaInput.value;
+                            cedulaNuevoInput.setAttribute('required', 'required');
+                            cedulaNuevoGroup.style.display = '';
+                        }
+                    } catch (error) {
+                        console.error('Error al buscar cliente:', error);
+                        searchMessage.textContent = 'Error al buscar cliente. Intenta de nuevo.';
+                        searchMessage.style.color = 'red';
+                    }
+                });
+            }
+
+            // Lógica para el botón "Crear usuario"
+            if (btnCrearUsuario) {
+                btnCrearUsuario.addEventListener('click', () => {
+                    clientSearchArea.classList.add('hidden');
+                    clientDetailsArea.classList.remove('hidden');
+                    searchMessage.textContent = '';
+                    clienteIdInput.value = '';
+                    // Mostrar y requerir el campo identificación
+                    identificacionNuevoGroup.style.display = '';
+                    identificacionNuevoInput.value = identificacionInput.value;
+                    identificacionNuevoInput.setAttribute('required', 'required');
+                    nombreInput.setAttribute('required', 'required');
+                    apellidoInput.setAttribute('required', 'required');
+                    emailInput.setAttribute('required', 'required');
+                    telefonoInput.setAttribute('required', 'required');
+                });
+            }
+
+            // Manejo del envío del formulario de reserva
+            if (formReserva) {
+                formReserva.addEventListener('submit', (event) => {
+                    // Si el área de detalles del cliente está oculta, significa que no se han ingresado datos
+                    // (esto cubre el caso de que alguien intente enviar sin buscar o ingresar datos)
+                    if (clientDetailsArea.classList.contains('hidden')) {
+                        alert('Por favor, busca un cliente por identificación o ingresa los datos del nuevo cliente.');
+                        event.preventDefault(); // Previene el envío del formulario
+                        return;
+                    }
+
+                    // El formulario se enviará a 'php/procesar_reserva.php'
+                    // El PHP manejará la respuesta y la redirección/mensaje
+                    // No se necesita `event.preventDefault()` aquí si queremos que el formulario se envíe de forma tradicional
+                    // y el PHP redirija o muestre un mensaje.
+                    // Si se quisiera un envío AJAX, aquí iría el fetch() y se mantendría event.preventDefault().
+                });
+            }
+
+            // Funcionalidad para el formulario de contacto
+            const formContacto = document.getElementById('form-contacto');
+            if (formContacto) {
+                formContacto.addEventListener('submit', async (event) => {
+                    event.preventDefault(); // Prevenir el envío por defecto del formulario
+                    
+                    // Obtener los datos del formulario
+                    const formData = new FormData(formContacto);
+                    
+                    try {
+                        // Enviar los datos al servidor mediante AJAX
+                        const response = await fetch('procesar_contacto.php', {
+                            method: 'POST',
+                            body: formData
+                        });
+                        
+                        // Convertir la respuesta a JSON
+                        const data = await response.json();
+                        
+                        // Mostrar mensaje según la respuesta
+                        if (data.success) {
+                            alert(data.message || '¡Mensaje enviado! Gracias por contactarnos.');
+                            formContacto.reset(); // Limpiar el formulario
+                        } else {
+                            alert(data.message || 'Error al enviar el mensaje. Por favor, inténtalo de nuevo.');
+                        }
+                    } catch (error) {
+                        console.error('Error al enviar el formulario:', error);
+                        alert('Error al enviar el mensaje. Por favor, inténtalo de nuevo.');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
